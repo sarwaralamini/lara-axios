@@ -98,7 +98,7 @@
       buttonTextLogging.style.display = 'inline-block';
       buttonText.style.display = 'none';
 
-      //MOKING FAKE LOGIN
+      //MOCKING FAKE LOGIN
       setTimeout(() => {
         showAlert('success', 'Login successful! Redirecting to dashboard...');
             setTimeout(() => {
