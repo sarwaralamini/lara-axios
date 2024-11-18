@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Providers;
-
 use Illuminate\Support\ServiceProvider;
+use Route;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        Route::aliasMiddleware('api.auth.check', \App\Http\Middleware\EnsureApiTokenIsValid::class);
     }
 
     /**
