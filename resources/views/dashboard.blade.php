@@ -10,13 +10,15 @@
 
   <style>
     :root {
-      --primary-color: #252b36; /* Dark Slate */
-      --secondary-color: #03dac6; /* Teal */
-      --background-color: #f5f5f5; /* Light Gray */
-      --surface-color: #ffffff; /* White */
-      --on-primary-color: #ffffff; /* White text on Primary */
-      --on-surface-color: #000000; /* Black text on Surface */
-      --border-color: #414955; /* Lighter version of Primary for borders */
+        --primary-color: #0A2B3D; /* Dark Slate */
+        --secondary-color: #03dac6; /* Teal */
+        --background-color: #f5f5f5; /* Light Gray */
+        --surface-color: #ffffff; /* White */
+        --on-primary-color: #ffffff; /* White text on Primary */
+        --on-surface-color: #000000; /* Black text on Surface */
+        --border-color: #414955; /* Lighter version of Primary for borders */
+        --highlight-color: #f3f6f9; /* Light Grayish Blue */
+        --dish-color: #9aaab3; /* Dish Color (Soft Grayish Blue) */
     }
 
     body {
@@ -50,15 +52,14 @@
     }
 
     .sidebar .nav-link {
-      color: var(--on-primary-color);
+      color: var(--dish-color);
       margin-bottom: 10px;
       border-radius: 5px;
       padding: 10px;
     }
 
     .sidebar .nav-link:hover {
-      background-color: var(--secondary-color);
-      color: var(--on-surface-color);
+      color: var(--on-primary-color);
     }
 
     .top-nav {
@@ -72,15 +73,15 @@
     }
 
     .btn-outline-light {
-        border: 2px solid var(--secondary-color); /* Teal border */
-        color: var(--secondary-color); /* Teal text */
+        border: 2px solid var(--highlight-color); /* Teal border */
+        color: var(--highlight-color); /* Teal text */
         transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     }
 
     .btn-outline-light:hover {
-        background-color: var(--secondary-color);
-        color: var(--on-primary-color); /* White text on hover */
-        border-color: var(--secondary-color);
+        background-color: var(--highlight-color);
+        color: var(--primary-color); /* White text on hover */
+        border-color: var(--highlight-color);
     }
 
     .menu-toggle {
@@ -107,12 +108,13 @@
     }
 
     .breadcrumb-container {
-      background-color: var(--surface-color); /* Matches table background */
-      border: 1px solid var(--border-color); /* Subtle border */
-      border-radius: 5px;
-      padding: 10px 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: var(--surface-color); /* Matches table background */
+        padding: 10px 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow below */
+        border: none; /* Remove border */
+        width: 100%; /* Make it full width */
+        border-radius: 0; /* Optional: Remove rounded corners */
     }
 
     .breadcrumb {
@@ -122,7 +124,7 @@
     }
 
     .breadcrumb-item a {
-      color: var(--secondary-color); /* Teal links */
+      color: var(--primary-color); /* Teal links */
       text-decoration: none;
     }
 
@@ -194,29 +196,37 @@
     <button class="btn btn-outline-light btn-sm px-4 rounded-pill">Logout</button>
   </div>
 
-  <!-- Main Content Area -->
   <div class="main-content">
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
-      <h4 class="text-center">Menu</h4>
-      <ul class="nav flex-column">
+        <h4 class="text-center">Menu</h4>
+        <ul class="nav flex-column">
         <li class="nav-item">
-          <a href="#" class="nav-link active">Dashboard</a>
+            <a href="#" class="nav-link active">
+            <i class="bi bi-house-door-fill me-2"></i> Dashboard
+            </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">Profile</a>
+            <a href="#" class="nav-link">
+            <i class="bi bi-person-fill me-2"></i> Profile
+            </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">Settings</a>
+            <a href="#" class="nav-link">
+            <i class="bi bi-gear-fill me-2"></i> Settings
+            </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link">Help</a>
+            <a href="#" class="nav-link">
+            <i class="bi bi-question-circle-fill me-2"></i> Help
+            </a>
         </li>
-      </ul>
+        </ul>
     </nav>
 
-    <!-- Table Container -->
-    <div class="table-container">
+
+    <!-- Main Content Area -->
+    <div class="main-content-right" style="flex-grow: 1;">
       <!-- Breadcrumb Section -->
       <nav aria-label="breadcrumb" class="breadcrumb-container">
         <ol class="breadcrumb">
@@ -225,46 +235,42 @@
         </ol>
       </nav>
 
-      <div class="logo text-center mb-4">My Dashboard</div>
-
-      <!-- Card with Table -->
+      <!-- Table Container -->
+      <div class="table-container">
         <div class="card card-container">
-            <div class="card-header">
-            <h5 class="mb-0">User Information</h5>
-            </div>
-            <div class="card-body">
-            <!-- Create Button aligned to the right -->
-            <div class="d-flex justify-content-end mb-3">
-                <button class="btn btn-success" id="createButton">
-                <i class="bi bi-plus-lg"></i> Create New User
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">User Information</h5>
+                <button class="btn btn-success btn-sm" id="createButton">
+                    <i class="bi bi-plus-lg"></i> Create New User
                 </button>
             </div>
-
-            <!-- Table with borders -->
+          <div class="card-body">
             <table class="table table-bordered table-striped table-hover">
-                <thead style="background-color: #252b36; color: white;">
+              <thead style="background-color: #f3f6f9; color: #0A2B3D;">
                 <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
                 </tr>
-                </thead>
-                <tbody id="tableBody">
-                <!-- Loading Text shown while data is being fetched -->
+              </thead>
+              <tbody id="tableBody">
                 <tr>
-                    <td colspan="4">
+                  <td colspan="4">
                     <div class="loading-text text-center">
-                        <p class="animated-text">Loading, please wait...</p>
+                      <p class="animated-text">Loading, please wait...</p>
                     </div>
-                    </td>
+                  </td>
                 </tr>
-                </tbody>
+              </tbody>
             </table>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
   </div>
+
+
 
   <!-- Footer -->
   <footer class="footer">
