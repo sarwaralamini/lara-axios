@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\DeleteStatusEnum;
+use App\Enums\StatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,10 +16,13 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('username')->unique();
+            $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->enum('status', array_column(StatusEnum::cases(), 'value'))->default(StatusEnum::ACTIVE->value);
+            $table->enum('delete_status', array_column(DeleteStatusEnum::cases(), 'value'))->default(DeleteStatusEnum::NOT_DELETED->value);
             $table->timestamps();
         });
 

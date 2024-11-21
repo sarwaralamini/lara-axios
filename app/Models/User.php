@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\DeleteStatusEnum;
+use App\Enums\StatusEnum;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,8 +22,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
+        'status',
+        'delete_status'
     ];
 
     /**
@@ -44,6 +49,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => StatusEnum::class,
+            'delete_status' => DeleteStatusEnum::class
         ];
     }
 }
