@@ -60,6 +60,7 @@ class AuthService
             throw new TokenCreateFailedException("Failed to create access token!");
         }
 
+        // Return the newly created token.
         return $token;
     }
 }
