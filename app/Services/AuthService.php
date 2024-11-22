@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Exceptions\UserDeletedException;
 use App\Exceptions\UserNotActiveException;
 use App\Exceptions\TokenCreateFailedException;
+use DB;
 
 class AuthService
 {
@@ -39,28 +40,30 @@ class AuthService
         $device_name
     ):string
     {
-        // Check if the user's account is deleted and revoke any existing tokens.
-        if ($user->delete_status->isDeleted()) {
-            $user->tokens()->delete();
-            throw new UserDeletedException("Your account is inactive. Please contact support to activate!");
-        }
+        return DB::transaction(function () use ($user, $device_name) {
+            // Check if the user's account is deleted and revoke any existing tokens.
+            if ($user->delete_status->isDeleted()) {
+                $user->tokens()->delete();
+                throw new UserDeletedException("The user account has been deleted and is permanently unavailable.");
+            }
 
-        // Check if the user's account is inactive and revoke any existing tokens.
-        if ($user->status->isInactive()) {
-            $user->tokens()->delete();
-            throw new UserNotActiveException("Your account is inactive. Please contact support to activate!");
-        }
+            // Check if the user's account is inactive and revoke any existing tokens.
+            if ($user->status->isInactive()) {
+                $user->tokens()->delete();
+                throw new UserNotActiveException("The user account is inactive and cannot authenticate.");
+            }
 
-        // Generate a new token for the user and their device.
-        $token = $user->createToken($device_name)->plainTextToken;
+            // Generate a new token for the user and their device.
+            $token = $user->createToken($device_name)->plainTextToken;
 
-        // Ensure the token was successfully created, otherwise throw an exception.
-        if(!$token)
-        {
-            throw new TokenCreateFailedException("Failed to create access token!");
-        }
+            // Ensure the token was successfully created, otherwise throw an exception.
+            if(!$token)
+            {
+                throw new TokenCreateFailedException("Failed to create the token due to an internal server error. Please try again later.");
+            }
 
-        // Return the newly created token.
-        return $token;
+            // Return the newly created token.
+            return $token;
+        });
     }
 }

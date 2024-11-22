@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Http\JsonResponse;
+
 class ResponseService
 {
     /**
@@ -12,53 +14,32 @@ class ResponseService
         //
     }
 
-    function SUCCESS_RESPONSE($result, $message): mixed
+    /**
+     * Build a standardized JSON response for API requests.
+     *
+     * This function constructs and returns a JSON response with a consistent structure,
+     * including a success status, data payload, message, and HTTP status code.
+     *
+     * @param bool $success Indicates whether the operation was successful (default: true).
+     * @param mixed $result The data to include in the response.
+     * @param string $message A message providing additional context about the response.
+     * @param int $code The HTTP status code for the response (default: 200).
+     *
+     * @return \Illuminate\Http\JsonResponse The JSON response object.
+     */
+    function BUILD_JSON_RESPONSE(
+        bool $success = true,
+        $result,
+        string $message,
+        int $code = 200
+    ): JsonResponse
     {
         $response = [
-            'success' => true,
+            'success' => $success,
             'data'    => $result,
             'message' => $message,
         ];
-
-        return response()->json($response, 200);
-    }
-
-
-    public function ERROR_RESPONSE($error, $errorMessages = [], $code = 404): mixed
-    {
-        $response = [
-            'success' => false,
-            'message' => $error,
-        ];
-
-
-        if(!empty($errorMessages)){
-            $response['data'] = $errorMessages;
-        }
-
 
         return response()->json($response, $code);
-    }
-
-    public function UNAUTHORIZED_RESPONSE($result, $message): mixed
-    {
-        $response = [
-            'success' => true,
-            'data'    => $result,
-            'message' => $message,
-        ];
-
-        return response()->json($response, 403);
-    }
-
-    public function NOT_FOUND_RESPONSE($result, $message): mixed
-    {
-        $response = [
-            'success' => true,
-            'data'    => $result,
-            'message' => $message,
-        ];
-
-        return response()->json($response, 404);
     }
 }

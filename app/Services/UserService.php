@@ -18,36 +18,56 @@ class UserService
     }
 
     /**
-     * Retrieve a user by their username with optional status and delete status filters.
+     * Retrieve a user by their unique user ID.
+     *
+     * This function fetches a user record from the database using the provided
+     * user ID. If no user is found, it throws a custom exception to indicate
+     * the absence of the requested user.
+     *
+     * @param int $user_id The unique identifier of the user to retrieve.
+     *
+     * @return User The user object corresponding to the given user ID.
+     *
+     * @throws UserNotFoundException If no user is found with the given ID.
+     */
+    public function GET_USER_BY_USER_ID(int $user_id): User
+    {
+        // Query the database for a user with the given user ID.
+        $user = User::where('id', $user_id)->first();
+
+        // If no user is found, throw a custom exception.
+        if(!$user)
+        {
+            throw new UserNotFoundException("No user found with the ID: [$user_id]. Please check the ID and try again.");
+        }
+
+        // Return the found user instance.
+        return $user;
+    }
+
+
+    /**
+     * Retrieve a user by their username.
      *
      * This function fetches a user record from the database based on the provided username.
      * It also applies additional filters for user status and delete status by default
      * to ensure only active and non-deleted users are considered.
      *
-     * @param string $username The username (email) of the user to retrieve.
-     * @param int $status Optional. The status of the user to filter by. Defaults to ACTIVE.
-     * @param int $delete_status Optional. The delete status of the user to filter by. Defaults to NOT_DELETED.
+     * @param string $username The username of the user to retrieve.
      *
      * @throws UserNotFoundException If no user matching the criteria is found.
      *
      * @return User The user instance matching the criteria.
      */
-    public function GET_USER_BY_USER_NAME(
-        $username,
-        $status = StatusEnum::ACTIVE->value,
-        $delete_status = DeleteStatusEnum::NOT_DELETED->value
-    ): User
+    public function GET_USER_BY_USER_NAME(string $username): User
     {
-        // Query the database for a user with the given username, status, and delete status.
-        $user = User::where('username', $username)
-                      ->where('status', $status)
-                      ->where('delete_status', $delete_status)
-                      ->first();
+        // Query the database for a user with the given username.
+        $user = User::where('username', $username)->first();
 
         // If no user is found, throw a custom exception.
         if(!$user)
         {
-            throw new UserNotFoundException("User with username [$username] not found!");
+            throw new UserNotFoundException("No user found with the username: [$username]. Please check the username and try again.");
         }
 
         // Return the found user instance.
