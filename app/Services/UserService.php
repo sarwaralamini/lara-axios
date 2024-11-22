@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-use App\Enums\DeleteStatusEnum;
-use App\Enums\StatusEnum;
-use App\Exceptions\UserNotFoundException;
 use App\Models\User;
+use App\Enums\StatusEnum;
+use App\Enums\DeleteStatusEnum;
+use Illuminate\Support\Facades\Lang;
+use App\Exceptions\UserNotFoundException;
 
 class UserService
 {
@@ -38,7 +39,7 @@ class UserService
         // If no user is found, throw a custom exception.
         if(!$user)
         {
-            throw new UserNotFoundException("No user found with the ID: [$user_id]. Please check the ID and try again.");
+            throw new UserNotFoundException(Lang::get('user.user_not_found_by_id', ['id' => $user_id]));
         }
 
         // Return the found user instance.
@@ -67,7 +68,7 @@ class UserService
         // If no user is found, throw a custom exception.
         if(!$user)
         {
-            throw new UserNotFoundException("No user found with the username: [$username]. Please check the username and try again.");
+            throw new UserNotFoundException(Lang::get('user.user_not_found_by_username', ['username' => $username]));
         }
 
         // Return the found user instance.

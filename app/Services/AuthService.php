@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use DB;
 use App\Models\User;
+use Illuminate\Support\Facades\Lang;
 use App\Exceptions\UserDeletedException;
 use App\Exceptions\UserNotActiveException;
 use App\Exceptions\TokenCreateFailedException;
-use DB;
 
 class AuthService
 {
@@ -44,13 +45,13 @@ class AuthService
             // Check if the user's account is deleted and revoke any existing tokens.
             if ($user->delete_status->isDeleted()) {
                 $user->tokens()->delete();
-                throw new UserDeletedException("The user account has been deleted and is permanently unavailable.");
+                throw new UserDeletedException(Lang::get('user.deleted_account'));
             }
 
             // Check if the user's account is inactive and revoke any existing tokens.
             if ($user->status->isInactive()) {
                 $user->tokens()->delete();
-                throw new UserNotActiveException("The user account is inactive and cannot authenticate.");
+                throw new UserNotActiveException(Lang::get('user.inactive_account'));
             }
 
             // Generate a new token for the user and their device.
@@ -59,7 +60,7 @@ class AuthService
             // Ensure the token was successfully created, otherwise throw an exception.
             if(!$token)
             {
-                throw new TokenCreateFailedException("Failed to create the token due to an internal server error. Please try again later.");
+                throw new TokenCreateFailedException(Lang::get('auth.token_creation_failed'));
             }
 
             // Return the newly created token.

@@ -9,6 +9,7 @@ use App\Services\ResponseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Lang;
 use App\Exceptions\UserDeletedException;
 use App\Exceptions\UserNotFoundException;
 use App\Exceptions\UserNotActiveException;
@@ -85,7 +86,7 @@ class AuthController extends Controller
                 return $this->responseService->BUILD_JSON_RESPONSE(
                     success: false,
                     result: null,
-                    message: 'Invalid credentials. Please check your username and password.',
+                    message: Lang::get('auth.failed'),
                     code: 401
                 );
             }
@@ -101,7 +102,7 @@ class AuthController extends Controller
             return $this->responseService->BUILD_JSON_RESPONSE(
                 success: true,
                 result: $data,
-                message: 'Login successful. Redirecting to your dashboard.'
+                message: Lang::get('auth.success')
             );
         }
         catch (UserNotFoundException $userNotFoundException) {
@@ -142,26 +143,26 @@ class AuthController extends Controller
         }catch (\Error $error) {
             // Handle any PHP runtime error (like TypeError, ParseError, etc.)
             // Log the exception for debugging purposes
-            Log::error('Unexpected error occurred: ' . $error->getMessage());
+            Log::error(Lang::get('common.unexpected_error_with_messsage', ['message' => $error->getMessage()]));
 
             // Handle any unexpected exceptions.
             return $this->responseService->BUILD_JSON_RESPONSE(
                 success: false,
                 result: null,
-                message: 'An unexpected error occurred. Please try again later.',
+                message: Lang::get('common.unexpected_error'),
                 code: 500
             );
         }
         catch (\Exception $exception) {
              // Handle the exception
             // Log the exception for debugging purposes
-            Log::error('Unexpected error occurred: ' . $exception->getMessage());
+            Log::error(Lang::get('common.unexpected_error_with_messsage', ['message' => $exception->getMessage()]));
 
             // Handle any unexpected exceptions.
             return $this->responseService->BUILD_JSON_RESPONSE(
                 success: false,
                 result: null,
-                message: 'An unexpected error occurred. Please try again later.',
+                message: Lang::get('common.unexpected_error'),
                 code: 500
             );
         }
