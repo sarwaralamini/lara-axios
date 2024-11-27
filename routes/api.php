@@ -8,6 +8,6 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
     Route::post('create/token', [AuthController::class, 'createToken'])->name('create-token');
 
     Route::middleware('auth:sanctum')->group(function () {
-        //
+        Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     });
 });

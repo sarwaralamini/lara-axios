@@ -67,4 +67,14 @@ class AuthService
             return $token;
         });
     }
+
+    public function LOGOUT($user)
+    {
+        if($user->currentAccessToken()->delete())
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

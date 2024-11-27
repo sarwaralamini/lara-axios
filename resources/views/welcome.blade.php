@@ -41,6 +41,10 @@
     #button-text-logging{
         display: none;
     }
+
+    #button-text-Logging-out{
+        display: none;
+    }
   </style>
 </head>
 <body>
@@ -103,8 +107,8 @@
         showAlert('success', 'Login successful! Redirecting to dashboard...');
             setTimeout(() => {
             window.location.href = '/dashboard'; // Redirect after 2 seconds
-        }, 2000);
-      }, 3000); // Wait 3 seconds before login success messsage
+        }, 500);
+      }, 1000); // Wait 3 seconds before login success messsage
 
 
     //   try {

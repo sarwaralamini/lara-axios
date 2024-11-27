@@ -73,6 +73,14 @@ body {
     border-color: var(--highlight-color);
 }
 
+#spinner {
+    display: none;
+}
+
+#button-text-logging-out{
+    display: none;
+}
+
 .menu-toggle {
   display: none;
   cursor: pointer;

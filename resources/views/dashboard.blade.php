@@ -85,7 +85,7 @@
             `;
             tableBody.appendChild(row);
             });
-        }, 5000); // Simulated API call delay of 2 seconds
+        }, 1000); // Simulated API call delay of 2 seconds
         });
     </script>
 @endpush

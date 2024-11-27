@@ -17,5 +17,7 @@ return [
     'success'               => 'Login successful. Redirecting to your dashboard.',
     'throttle'              => 'Too many login attempts. Please try again in :seconds seconds.',
     'token_creation_failed' => 'Failed to create the token due to an internal server error. Please try again later.',
+    'logout_success'        => 'You have been logged out successfully. You will be redirected to the login page shortly.',
+    'token_logout_failed'   => 'Logout failed due to an internal server error. Please try again later.',
 
 ];

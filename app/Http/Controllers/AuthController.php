@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\CurrentAccessTokenDeleteFailedException;
 use Illuminate\Http\Request;
 use App\Services\AuthService;
 use App\Services\UserService;
@@ -84,7 +85,7 @@ class AuthController extends Controller
 
                 // Build and return a JSON response indicating invalid credentials with a 401 Unauthorized status code.
                 return $this->responseService->BUILD_JSON_RESPONSE(
-                    success: false,
+                    is_success: false,
                     result: null,
                     message: Lang::get('auth.failed'),
                     code: 401
@@ -100,7 +101,7 @@ class AuthController extends Controller
 
             // Return a successful login response with token data and a success message.
             return $this->responseService->BUILD_JSON_RESPONSE(
-                success: true,
+                is_success: true,
                 result: $data,
                 message: Lang::get('auth.success')
             );
@@ -108,7 +109,7 @@ class AuthController extends Controller
         catch (UserNotFoundException $userNotFoundException) {
             // Handle case where the user is not found.
             return $this->responseService->BUILD_JSON_RESPONSE(
-                success: false,
+                is_success: false,
                 result: null,
                 message: $userNotFoundException->getMessage(),
                 code: 404
@@ -117,7 +118,7 @@ class AuthController extends Controller
         catch (UserDeletedException $userDeletedException) {
             // Handle case where the user is deleted.
             return $this->responseService->BUILD_JSON_RESPONSE(
-                success: false,
+                is_success: false,
                 result: null,
                 message: $userDeletedException->getMessage(),
                 code: 410
@@ -126,7 +127,7 @@ class AuthController extends Controller
         catch (UserNotActiveException $userNotActiveException) {
             // Handle case where the user is not active.
             return $this->responseService->BUILD_JSON_RESPONSE(
-                success: false,
+                is_success: false,
                 result: null,
                 message: $userNotActiveException->getMessage(),
                 code: 401
@@ -135,36 +136,144 @@ class AuthController extends Controller
         catch (TokenCreateFailedException $tokenCreateFailedException) {
             // Handle case where token creation fails.
             return $this->responseService->BUILD_JSON_RESPONSE(
-                success: false,
+                is_success: false,
                 result: null,
                 message: $tokenCreateFailedException->getMessage(),
                 code: 500
             );
         }catch (\Error $error) {
-            // Handle any PHP runtime error (like TypeError, ParseError, etc.)
-            // Log the exception for debugging purposes
-            Log::error(Lang::get('common.unexpected_error_with_messsage', ['message' => $error->getMessage()]));
+            // Log the exception details using a custom log message format.
+            // The log message includes:
+            // - The error message: Provides details about what went wrong.
+            // - The file: Specifies the file where the error occurred for precise debugging.
+            // - The line: Indicates the exact line in the file where the error was triggered.
+            // This structured logging approach helps in debugging by providing comprehensive
+            // and well-organized error details.
+            Log::error(
+                $this->responseService->GENERATE_LOG_MESSAGE(
+                    errorMessage: $error->getMessage(),
+                    file: $error->getFile(),
+                    line: $error->getLine()
+                )
+            );
 
-            // Handle any unexpected exceptions.
+            // Return a generic JSON response indicating an internal server error.
+            // The generic message prevents sensitive information from being exposed to the client.
             return $this->responseService->BUILD_JSON_RESPONSE(
-                success: false,
+                is_success: false,
                 result: null,
                 message: Lang::get('common.unexpected_error'),
                 code: 500
             );
         }
         catch (\Exception $exception) {
-             // Handle the exception
-            // Log the exception for debugging purposes
-            Log::error(Lang::get('common.unexpected_error_with_messsage', ['message' => $exception->getMessage()]));
+            // Log the exception details using a custom log message format.
+            // The log message includes:
+            // - The error message: Provides details about what went wrong.
+            // - The file: Specifies the file where the error occurred for precise debugging.
+            // - The line: Indicates the exact line in the file where the error was triggered.
+            // This structured logging approach helps in debugging by providing comprehensive
+            // and well-organized error details. the exception's message for easier troubleshooting.
+            Log::error(
+                $this->responseService->GENERATE_LOG_MESSAGE(
+                    errorMessage: $exception->getMessage(),
+                    file: $exception->getFile(),
+                    line: $exception->getLine()
+                )
+            );
 
-            // Handle any unexpected exceptions.
+           // Return a generic JSON response indicating an internal server error.
+           // The generic message prevents sensitive information from being exposed to the client.
+           return $this->responseService->BUILD_JSON_RESPONSE(
+               is_success: false,
+               result: null,
+               message: Lang::get('common.unexpected_error'),
+               code: 500
+           );
+       }
+    }
+
+    /**
+     * Logs out the authenticated user by invalidating their access token.
+     *
+     * @param Request $request The HTTP request object containing the authenticated user's information.
+     * @return JsonResponse A JSON response indicating the success or failure of the logout operation.
+     */
+
+    public function logout(Request $request): JsonResponse
+    {
+        try {
+            // Attempt to log out the user by calling the auth service to delete the current access token.
+            if($this->authService->LOGOUT($request->user()))
+            {
+                // Return a successful JSON response with a message indicating that the logout was successful.
+                return $this->responseService->BUILD_JSON_RESPONSE(
+                    is_success: true,
+                    result: null,
+                    message: Lang::get('auth.logout_success'),
+                    code: 200
+                );
+            }
+
+            // If the logout operation fails (e.g., token deletion fails),
+            // return a JSON response indicating a failure.
             return $this->responseService->BUILD_JSON_RESPONSE(
-                success: false,
+                is_success: false,
                 result: null,
+                message: Lang::get('auth.token_logout_failed'),
+                code: 500
+            );
+
+        }
+        catch (\Error $error) {
+            // Log the exception details using a custom log message format.
+            // The log message includes:
+            // - The error message: Provides details about what went wrong.
+            // - The file: Specifies the file where the error occurred for precise debugging.
+            // - The line: Indicates the exact line in the file where the error was triggered.
+            // This structured logging approach helps in debugging by providing comprehensive
+            // and well-organized error details. the exception's message for easier troubleshooting.
+            Log::error(
+                $this->responseService->GENERATE_LOG_MESSAGE(
+                    errorMessage: $error->getMessage(),
+                    file: $error->getFile(),
+                    line: $error->getLine()
+                )
+            );
+
+            // Return a generic JSON response indicating an internal server error.
+           // The generic message prevents sensitive information from being exposed to the client.
+            return $this->responseService->BUILD_JSON_RESPONSE(
+                is_success: false,
+                result: $error,
                 message: Lang::get('common.unexpected_error'),
                 code: 500
             );
         }
+        catch (\Exception $exception) {
+            // Log the exception details using a custom log message format.
+            // The log message includes:
+            // - The error message: Provides details about what went wrong.
+            // - The file: Specifies the file where the error occurred for precise debugging.
+            // - The line: Indicates the exact line in the file where the error was triggered.
+            // This structured logging approach helps in debugging by providing comprehensive
+            // and well-organized error details. the exception's message for easier troubleshooting.
+            Log::error(
+                $this->responseService->GENERATE_LOG_MESSAGE(
+                    errorMessage: $exception->getMessage(),
+                    file: $exception->getFile(),
+                    line: $exception->getLine()
+                )
+            );
+
+           // Return a generic JSON response indicating an internal server error.
+           // The generic message prevents sensitive information from being exposed to the client.
+           return $this->responseService->BUILD_JSON_RESPONSE(
+               is_success: false,
+               result: $exception,
+               message: Lang::get('common.unexpected_error'),
+               code: 500
+           );
+       }
     }
 }
