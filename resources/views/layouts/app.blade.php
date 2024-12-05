@@ -6,7 +6,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>@yield('title')</title>
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('dist/css/style.css')}}">
   @stack('css')
@@ -24,6 +24,15 @@
     <div class="main-content-right" style="flex-grow: 1;">
         @yield('content')
     </div>
+    <!-- Spinner Overlay -->
+    <div class="loading-overlay" id="loadingSpinner_body" style="display: none;">
+        <div>
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="processing-text mt-3">Logging out...</p>
+        </div>
+    </div>
   </div>
 
 
@@ -34,27 +43,12 @@
   </footer>
 
   <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="{{ asset('dist/js/bootstrap-notify-3.1.3.min.js') }}"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="{{ asset('dist/js/common.js') }}"></script>
   <script>
-    document.getElementById('logout-button').addEventListener('click', async function (event) {
-
-      const button = this;
-      const spinner = document.getElementById('spinner');
-      const buttonText = document.getElementById('button-text');
-      const buttonTextLoggingOut = document.getElementById('button-text-logging-out');
-
-      // Disable inputs and button, show spinner
-      button.disabled = true;
-      spinner.style.display = 'inline-block';
-      buttonTextLoggingOut.style.display = 'inline-block';
-      buttonText.style.display = 'none';
-
-      //MOCKING FAKE LOGOUT
-      setTimeout(() => {
-        alert('You have been logged out successfully. You will be redirected to the login page shortly.')
-        window.location.href = '/';
-      }, 1000); // Wait 3 seconds before logged out success messsage
-    });
   </script>
   @stack('js')
 </body>

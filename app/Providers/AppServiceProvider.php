@@ -12,7 +12,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        Route::aliasMiddleware('api.auth.check', \App\Http\Middleware\EnsureApiTokenIsValid::class);
+        Route::aliasMiddleware('web.auth', \App\Http\Middleware\Authenticate::class);
+        Route::aliasMiddleware('redirect.auth', \App\Http\Middleware\RedirectIfAuthenticated::class);
     }
 
     /**

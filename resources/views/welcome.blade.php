@@ -6,10 +6,7 @@
   <title>Login Page</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  >
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <style>
     body {
       background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
@@ -58,11 +55,11 @@
             <input type="hidden" name="device_name" value="mi9tpro">
             <div class="mb-3">
               <label for="username" class="form-label">Username</label>
-              <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username">
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
             </div>
             <button type="submit" class="btn btn-primary w-100">
               <span id="button-text">Login</span>
@@ -79,72 +76,16 @@
   </div>
 
   <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="{{ asset('dist/js/common.js') }}"></script>
   <script>
-    document.getElementById('login-form').addEventListener('submit', async function (event) {
-      event.preventDefault();
-
-      const usernameField = document.getElementById('username');
-      const passwordField = document.getElementById('password');
-      const button = event.target.querySelector('button');
-      const spinner = document.getElementById('spinner');
-      const buttonText = document.getElementById('button-text');
-      const buttonTextLogging = document.getElementById('button-text-logging');
-
-      const alertContainer = document.getElementById('alert-container');
-
-      // Disable inputs and button, show spinner
-      usernameField.disabled = true;
-      passwordField.disabled = true;
-      button.disabled = true;
-      spinner.style.display = 'inline-block';
-      buttonTextLogging.style.display = 'inline-block';
-      buttonText.style.display = 'none';
-
-      //MOCKING FAKE LOGIN
-      setTimeout(() => {
-        showAlert('success', 'Login successful! Redirecting to dashboard...');
-            setTimeout(() => {
-            window.location.href = '/dashboard'; // Redirect after 2 seconds
-        }, 500);
-      }, 1000); // Wait 3 seconds before login success messsage
-
-
-    //   try {
-    //     const response = await axios.post('/api/login', {
-    //       username: usernameField.value,
-    //       password: passwordField.value,
-    //       device_name: 'mi9tpro'
-    //     });
-
-    //     // Handle success
-    //     if (response.status === 200) {
-    //       showAlert('success', 'Login successful! Redirecting to dashboard...');
-    //       setTimeout(() => {
-    //         window.location.href = '/dashboard'; // Redirect after 2 seconds
-    //       }, 2000);
-    //     }
-    //   } catch (error) {
-    //     showAlert('danger', 'Login failed. Please check your credentials.');
-    //   } finally {
-    //     // Re-enable inputs and button, hide spinner
-    //     usernameField.disabled = false;
-    //     passwordField.disabled = false;
-    //     button.disabled = false;
-    //     spinner.style.display = 'none';
-    //     buttonText.style.display = 'inline';
-    //   }
-
-      function showAlert(type, message) {
-        alertContainer.innerHTML = `
-          <div class="alert alert-${type} alert-dismissible fade show text-center" role="alert">
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        `;
-      }
-    });
+        // Retrieve the current URL (or fallback to '/dashboard' if not set)
+        @if (session('current_url'))
+            const current_url = "{{ session('current_url') }}";
+        @else
+            const current_url = "/dashboard";
+        @endif
   </script>
 </body>
 </html>
