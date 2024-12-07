@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name'              => 'System Admin',
+            'username'          => 'admin',
+            'email'             => 'admin@lara-axios.sar',
+            'password'          => Hash::make('password'),
+            'remember_token'    => Str::random(10),
         ]);
+
+        User::factory(100)->create();
     }
 }
