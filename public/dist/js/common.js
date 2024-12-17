@@ -222,6 +222,49 @@ if(logoutForm)
     });
 }
 
+/**
+ * Event listener to detect logout action on other tabs using the `storage` event.
+ * When the user logs out in one tab, all other tabs will be redirected to the logout route.
+ */
+window.addEventListener('storage', function (event) {
+    // Check if the event key is 'userLoggedOut' and its value is 'true'
+    if (event.key === 'userLoggedOut' && event.newValue === 'true') {
+        // Log the detection of logout in another tab
+        console.log('Detected logout in another tab.');
+        window.location.href = '/';  // Redirect to the logout route (or login page if preferred)
+    }
+});
+
+/**
+ * Function that handles the logout process for the current tab.
+ * It sets a flag in localStorage to notify other tabs of the logout action
+ * and then redirects the current tab to the Login route.
+ */
+function logoutUser() {
+    // Log the logout action from this tab
+    console.log('Logging out from this tab.');
+    localStorage.setItem('userLoggedOut', 'true');  // Set a flag in localStorage to notify other tabs
+    window.location.href = '/';  // Redirect the current tab to the logout route
+}
+
+// Attach the logout functionality to the logout button if it exists
+const logoutButton = document.getElementById('logout-button');
+if (logoutButton) {
+    logoutButton.addEventListener('click', logoutUser);  // Attach logout function to the button
+}
+
+/**
+ * Event listener to check if the user has logged out in this tab when the page is loaded.
+ * If the user logged out, the flag is cleared and the user is redirected to the login page.
+ */
+window.addEventListener('load', function () {
+    if (localStorage.getItem('userLoggedOut') === 'true') {
+        // If user has logged out, clear the flag and redirect to login page
+        localStorage.removeItem('userLoggedOut');  // Remove the flag to prevent infinite redirects
+        window.location.href = '/';  // Redirect to the login page
+    }
+});
+
 
 /**
  * Display validation error messages next to each input field

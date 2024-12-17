@@ -45,6 +45,12 @@
                             <option value="Moderator">Moderator</option>
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" readonly id="fileInput">
+                            <label class="input-group-text" id="openFileManager" >Upload</label>
+                          </div>
+                    </div>
                     <button type="submit" class="btn btn-success float-end">Create User</button>
                 </form>
 
