@@ -8,8 +8,18 @@
         "php": "^8.2",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "sarwar/popup-file-manager": "dev-main"
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "C:/wamp64/www/lara-axios/packages/sarwaralamini/poup-file-manager",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.1",

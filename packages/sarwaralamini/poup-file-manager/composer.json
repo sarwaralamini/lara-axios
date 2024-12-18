@@ -1,0 +1,31 @@
+{
+    "name": "sarwar/popup-file-manager",
+    "description": "A lightweight, reusable laravel package for managing file operations within a modal interface. It supports dynamic configurations, file browsing, uploads, directory creation, deletions, and live search, making it ideal for seamless integration into any web application.",
+    "license": "MIT",
+    "keywords": [
+        "popup file manager",
+        "laravel"
+    ],
+    "authors": [
+        {
+            "name": "Md. Sarwar Alam",
+            "email": "sarwaralam.ini@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sarwar\\PopupFileManager\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sarwar\\PopupFileManager\\FileManagerServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}
