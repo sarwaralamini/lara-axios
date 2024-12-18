@@ -89,13 +89,7 @@
   <script src="{{ asset('dist/js/bootstrap-notify-3.1.3.min.js') }}"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="{{ asset('dist/js/common.js') }}"></script>
-
-  <script>
-    const storagePath = "{{ asset('storage/') }}";
-    const folderIcon = "{{ asset('dist/img/folder.png') }}";
-    const pdfIcon = "{{ asset('dist/img/pdf.png') }}";
-  </script>
-  <script src="{{ asset('dist/js/filemanager.js') }}"></script>
+  <script src="{{ asset('dist/js/plugins/filemanager-library.js') }}"></script>
   @stack('js')
 </body>
 </html>
