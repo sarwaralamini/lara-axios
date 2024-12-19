@@ -95,7 +95,6 @@
         searchInputSelector: '#searchFileInput',
         goBackButtonSelector: '#goBack',
         paginationContainerSelector: '#paginationContainer',
-        fileInputSelector: '', // Will handle individually
         uploadFileInputSelector: '#uploadFileInput',
         createDirectorySelector: '#createDirectory',
         uploadButtonSelector: '#uploadFile',
@@ -103,10 +102,9 @@
         storagePath: "{{ config('pupup-file-manager.storage_path') }}",
         folderIcon: "{{ config('pupup-file-manager.folder_icon') }}",
         pdf_icon: "{{ asset('dist/img/pdf.png') }}",
-        storagePath: "{{ config('pupup-file-manager.storage_path') }}",
-        hiddenNames: "{{ json_encode(config('pupup-file-manager.hidden_names')) }}",
-        hiddenPaths: "{{ json_encode(config('pupup-file-manager.hidden_paths')) }}",
-        hideInputFor: "{{ json_encode(config('pupup-file-manager.hide_input_for')) }}",
+        hiddenNames: ['thumbnails', 'index.html', 'index.htm', 'index.php', 'index', '.gitignore', 'folder.png'],
+        hiddenPaths: ['catalog/thumbnails/products', 'catalog/thumbnails/categories'],
+        hiddenDeleteButtonItems: ['products', 'categories'],
         fileInputButtons: []
     });
 

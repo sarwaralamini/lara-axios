@@ -23,24 +23,22 @@ class FileManagerServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
-        //dd(Route::getRoutes());
         $this->loadViewsFrom(__DIR__ . '/resources/views/components', 'Sarwar\PopupFileManager');
-        //dd(View::getFinder()->getPaths());
         // $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
 
         $this->publishes([
             __DIR__ . '/config/pupup-file-manager.php' => config_path('pupup-file-manager.php'),
-        ], 'config');
+        ], 'plfm_config');
 
         $this->publishes([
             __DIR__ . '/resources/js/popup-file-manager.js' => public_path('dist/js/popup-file-manager.js'),
             __DIR__ . '/resources/css/popup-file-manager.css' => public_path('dist/css/popup-file-manager.css'),
             __DIR__ . '/resources/views/vendor' => resource_path('views/vendor'),
-        ], 'public');
+        ], 'plfm_public');
 
         $this->publishes([
             __DIR__ . '/resources/views/vendor' => resource_path('views/vendor'),
-        ], 'views');
+        ], 'plfm_view');
 
         // Registers a single Blade component with the alias 'file-manager-modal',
         //Blade::component('file-manager-modal', 'Sarwar\PopupFileManager::file-manager-modal');

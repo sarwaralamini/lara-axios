@@ -15,29 +15,30 @@ class FileManager {
         // Default settings for the FileManager
         const defaultSettings = {
             modalSelector: '#fileManagerModal',
-            openButtonSelector: '#openFileManager',
             fileListSelector: '#fileList',
             deleteButtonSelector: '#deleteSelected',
             searchInputSelector: '#searchFileInput',
             goBackButtonSelector: '#goBack',
             paginationContainerSelector: '#paginationContainer',
-            fileInputSelector: '#fileInput',
             uploadFileInputSelector: '#uploadFileInput',
             createDirectorySelector: '#createDirectory',
+            createDirectoryInputWrapper: '#createDirectoryInputWrapper',
+            createDirectoryInput: '#createDirectoryInput',
+            saveDirectoryBtn: '#saveDirectory',
             uploadButtonSelector: '#uploadFile',
             itemsPerPage: 12,
             defaultPath: '/catalog',
             storagePath: '',
             folderIcon: '',
             pdfIcon: '',
-            hiddenNames: ['thumbnails', 'index.html', 'index.htm', 'index.php', 'index', '.gitignore', 'folder.png'],
-            hiddenPaths: ['catalog/thumbnails/products', 'catalog/thumbnails/categories'],
-            hideInputFor: ['products', 'categories'],
+            hiddenNames: [],
+            hiddenPaths: [],
+            hiddenDeleteButtonItems: [],
             endpoints: {
-                fetchFiles: '/file-manager/files',
-                createDirectory: '/file-manager/create-directory',
-                uploadFile: '/file-manager/upload',
-                deleteFiles: '/file-manager/delete-multiple',
+                fetchFiles: '/sarwar/popup-file-manager/files',
+                createDirectory: '/sarwar/popup-file-manager/create-directory',
+                uploadFile: '/sarwar/popup-file-manager/upload',
+                deleteFiles: '/sarwar/popup-file-manager/delete-multiple',
             },
             csrfToken: document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
             fileInputButtons: [] // Dynamic input-button pairs
@@ -52,7 +53,6 @@ class FileManager {
         // Initialize DOM elements
         this.elements = {
             modal: document.querySelector(this.settings.modalSelector),
-            openButton: document.querySelector(this.settings.openButtonSelector),
             fileList: document.querySelector(this.settings.fileListSelector),
             deleteButton: document.querySelector(this.settings.deleteButtonSelector),
             searchInput: document.querySelector(this.settings.searchInputSelector),
@@ -60,6 +60,9 @@ class FileManager {
             paginationContainer: document.querySelector(this.settings.paginationContainerSelector),
             uploadFileInput: document.querySelector(this.settings.uploadFileInputSelector),
             createDirectory: document.querySelector(this.settings.createDirectorySelector),
+            createDirectoryInputWrapper: document.querySelector(this.settings.createDirectoryInputWrapper),
+            saveDirectoryBtn: document.querySelector(this.settings.saveDirectoryBtn),
+            createDirectoryInput: document.querySelector(this.settings.createDirectoryInput),
             uploadButton: document.querySelector(this.settings.uploadButtonSelector),
         };
 
@@ -141,8 +144,23 @@ class FileManager {
 
         // Create a new directory
         this.elements.createDirectory.addEventListener('click', () => {
-            const dirName = prompt('Enter directory name:');
-            if (dirName) this.createDirectory(dirName);
+            // Toggle visibility of the input wrapper
+            this.elements.createDirectoryInputWrapper.classList.toggle('d-none');
+
+            // Focus on the input field if the wrapper is shown
+            if (!this.elements.createDirectoryInputWrapper.classList.contains('d-none')) {
+                this.elements.createDirectoryInput.focus(); // Focus on the input field
+            }
+        });
+
+        // Handle the "Save" button to create a new directory
+        this.elements.saveDirectoryBtn.addEventListener('click', () => {
+            const directoryName = this.elements.createDirectoryInput.value.trim();
+            if (directoryName) {
+                if (directoryName) this.createDirectory(directoryName);
+            } else {
+                alert('Please enter a valid directory name!');
+            }
         });
 
         // File upload trigger
@@ -232,14 +250,14 @@ class FileManager {
                 // Hide files and paths based on settings
                 const hideFile = this.settings.hiddenNames.includes(name) ? 'd-none' : 'd-inline-block';
                 const hidePath = this.settings.hiddenPaths.includes(item) ? 'd-none' : 'd-inline-block';
-                const hideInput = this.settings.hideInputFor.includes(name) ? 'd-none' : 'd-inline-block';
+                const hideDeleteDeleteButtonItem = this.settings.hiddenDeleteButtonItems.includes(name) ? 'd-none' : 'd-inline-block';
 
                 return `
                     <div class="col-6 col-md-4 col-lg-3 mb-3 text-start ${hideFile} ${hidePath}">
                         <div class="${type}" data-path="${item}">
                             <img src="${icon}" class="file-manager-image img-thumbnail" alt="${name}">
                         </div>
-                        <input type="checkbox" class="select-item form-check-input ${hideInput}" data-path="${item}">
+                        <input type="checkbox" class="select-item form-check-input ${hideDeleteDeleteButtonItem}" data-path="${item}">
                         <span class="item-name">${name}</span>
                     </div>`;
             })
@@ -300,7 +318,12 @@ class FileManager {
                 name: dirName,
                 _token: this.settings.csrfToken,
             },
-            success: () => this.fetchFiles(this.currentPath), // Refresh file list
+            success: () => {
+                this.fetchFiles(this.currentPath), // Refresh file list
+                this.elements.createDirectoryInputWrapper.classList.remove('show-input');
+                this.elements.createDirectoryInputWrapper.classList.add('d-none');
+                this.elements.createDirectoryInput.value = ''; // Clear input field
+            }
         });
     }
 

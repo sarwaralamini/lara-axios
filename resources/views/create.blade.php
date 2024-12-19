@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('css')
-
+    <link rel="stylesheet" href="{{ asset('dist/css/popup-file-manager.css') }}">
 @endpush
 
 @section('title', 'Create User')
@@ -80,12 +80,61 @@
             </div>
         </div>
         </div>
+        <!-- File Manager Modal 1 -->
+        <div class="modal fade" id="fileManagerModal" tabindex="-1" aria-labelledby="fileManagerLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fileManagerLabel">File Manager</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="fileManager">
+                            <div class="file-manager-controls mb-3">
+                                <div class="left-controls">
+                                    <button class="btn btn-sm btn-success" id="createDirectory">
+                                        <i class="bi bi-folder-plus"></i> Create Directory
+                                    </button>
+                                    <input type="file" id="uploadFileInput" class="d-none">
+                                    <button class="btn btn-sm btn-primary" id="uploadFile">
+                                        <i class="bi bi-cloud-upload"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger d-none" id="deleteSelected">
+                                        <i class="bi bi-trash"></i> Delete Selected
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" id="goBack" style="display:none;">
+                                        <i class="bi bi-arrow-left"></i>
+                                    </button>
+                                </div>
+                                <div class="right-controls">
+                                    <input type="text" id="searchFileInput" class="form-control" placeholder="Search files...">
+                                    <i class="bi bi-search search-icon"></i>
+                                </div>
+                            </div>
+
+                            <!-- New Directory Input with Animation -->
+                            <div id="createDirectoryInputWrapper" class="d-none mb-3">
+                                <input type="text" id="createDirectoryInput" class="form-control" placeholder="Enter directory name...">
+                                <button class="btn btn-sm btn-success mt-2" id="saveDirectory">Save</button>
+                            </div>
+
+                            <div class="border rounded p-3">
+                                <div class="row" id="fileList"></div>
+                            </div>
+
+                            <div class="d-flex justify-content-center mt-3" id="paginationContainer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection
 
 @push('js')
+<script src="{{ asset('dist/js/popup-file-manager.js') }}"></script>
 <script>
-
     const fileManager = new FileManager({
         modalSelector: '#fileManagerModal',
         fileListSelector: '#fileList',
@@ -93,23 +142,25 @@
         searchInputSelector: '#searchFileInput',
         goBackButtonSelector: '#goBack',
         paginationContainerSelector: '#paginationContainer',
-        fileInputSelector: '', // Will handle individually
         uploadFileInputSelector: '#uploadFileInput',
         createDirectorySelector: '#createDirectory',
         uploadButtonSelector: '#uploadFile',
-        defaultPath: '/catalog',
-        storagePath: "{{ asset('storage/') }}",
-        folderIcon: "{{ asset('dist/img/folder.png') }}",
-        pdfIcon: "{{ asset('dist/img/pdf.png') }}",
-        fileInputButtons:[]
+        defaultPath: "{{ config('pupup-file-manager.default_path') }}",
+        storagePath: "{{ config('pupup-file-manager.storage_path') }}",
+        folderIcon: "{{ config('pupup-file-manager.folder_icon') }}",
+        pdf_icon: "{{ asset('dist/img/pdf.png') }}",
+        hiddenNames: ['thumbnails', 'index.html', 'index.htm', 'index.php', 'index', '.gitignore', 'folder.png'],
+        hiddenPaths: ['catalog/thumbnails/products', 'catalog/thumbnails/categories'],
+        hiddenDeleteButtonItems: ['products', 'categories'],
+        fileInputButtons: []
     });
 
-    // Dynamically push file input buttons
+    // // Dynamically push file input buttons
     fileManager.settings.fileInputButtons.push( { input: '#fileInput1', button: '#openFileManager1' } );
     fileManager.settings.fileInputButtons.push( { input: '#fileInput2', button: '#openFileManager2' } );
     fileManager.settings.fileInputButtons.push( { input: '#fileInput3', button: '#openFileManager3' } );
 
-    // Rebind the buttons after adding new input/button pairs
+    // // Rebind the buttons after adding new input/button pairs
     fileManager.bindInputButtons(); // This ensures the new input-button pairs are correctly bound
 
     document.addEventListener('DOMContentLoaded', () => {

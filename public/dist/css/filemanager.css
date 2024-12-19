@@ -8,6 +8,17 @@
     justify-content: space-between;
 }
 
+#fileManager .file-manager-controls .d-none {
+    display: none;
+}
+
+#fileManager .file-manager-controls .show-input {
+    display: block;
+    animation: slideIn 0.5s ease-in-out;
+}
+
+
+
 .file-manager-controls .left-controls {
     display: flex;
     gap: 10px;
@@ -49,5 +60,16 @@
         min-height: 120px !important;
         max-height: 120px !important;
         min-width: 100%;
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "685e11f16e1a52f458ebcf401695521a",
+    "content-hash": "13bdc181e8df478c24460e8f167783d1",
     "packages": [
         {
             "name": "brick/math",
@@ -2216,10 +2216,6 @@
             ],
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "3.x-dev",
-                    "dev-2.x": "2.x-dev"
-                },
                 "laravel": {
                     "providers": [
                         "Carbon\\Laravel\\ServiceProvider"
@@ -2229,6 +2225,10 @@
                     "includes": [
                         "extension.neon"
                     ]
+                },
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev",
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
@@ -3368,8 +3368,8 @@
             "version": "dev-main",
             "dist": {
                 "type": "path",
-                "url": "C:/wamp64/www/lara-axios/packages/sarwaralamini/poup-file-manager",
-                "reference": "9f51f825f4e7697654d455a5f8e46d46cbbee326"
+                "url": "./packages/sarwaralamini/poup-file-manager",
+                "reference": "d505b0521b36e9b90a036fcaf7b197dfce7c7c10"
             },
             "require": {
                 "php": "^8.2"
@@ -3403,7 +3403,7 @@
             ],
             "transport-options": {
                 "symlink": true,
-                "relative": false
+                "relative": true
             }
         },
         {

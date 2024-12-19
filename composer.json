@@ -14,7 +14,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "C:/wamp64/www/lara-axios/packages/sarwaralamini/poup-file-manager",
+            "url": "./packages/sarwaralamini/poup-file-manager",
             "options": {
                 "symlink": true
             }

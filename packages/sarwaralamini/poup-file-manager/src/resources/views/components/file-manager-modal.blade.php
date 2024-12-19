@@ -1,4 +1,4 @@
-<!-- File Manager Modal 1-->
+<!-- File Manager Modal 1 -->
 <div class="modal fade" id="fileManagerModal" tabindex="-1" aria-labelledby="fileManagerLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -11,7 +11,7 @@
                     <div class="file-manager-controls mb-3">
                         <div class="left-controls">
                             <button class="btn btn-sm btn-success" id="createDirectory">
-                                <i class="bi bi-folder-plus"></i>
+                                <i class="bi bi-folder-plus"></i> Create Directory
                             </button>
                             <input type="file" id="uploadFileInput" class="d-none">
                             <button class="btn btn-sm btn-primary" id="uploadFile">
@@ -29,9 +29,17 @@
                             <i class="bi bi-search search-icon"></i>
                         </div>
                     </div>
+
+                    <!-- New Directory Input with Animation -->
+                    <div id="createDirectoryInputWrapper" class="d-none mb-3">
+                        <input type="text" id="createDirectoryInput" class="form-control" placeholder="Enter directory name...">
+                        <button class="btn btn-sm btn-success mt-2" id="saveDirectory">Save</button>
+                    </div>
+
                     <div class="border rounded p-3">
                         <div class="row" id="fileList"></div>
                     </div>
+
                     <div class="d-flex justify-content-center mt-3" id="paginationContainer"></div>
                 </div>
             </div>
