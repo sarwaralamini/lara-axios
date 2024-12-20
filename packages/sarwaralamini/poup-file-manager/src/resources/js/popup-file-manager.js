@@ -230,9 +230,26 @@ class FileManager {
                 this.renderFiles(items); // Render file list
                 this.renderPagination(totalPages, currentPage, totalItems); // Render pagination
                 this.toggleGoBackButton(parentDirectory); // Toggle back button visibility
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                const errorMessage = jqXHR.responseJSON?.message || 'Failed to fetch files. Please try again later.';
+                this.renderError(errorMessage);
             }
         });
     }
+
+    /**
+     * Render an error message as a Bootstrap alert.
+     * @param {string} errorMessage - The error message to display.
+     */
+    renderError(errorMessage) {
+        this.elements.fileList.innerHTML = `
+            <div class="alert alert-danger text-center" role="alert">
+                ${errorMessage}
+            </div>
+        `;
+    }
+
 
     /**
      * Render the list of files as HTML.
@@ -323,6 +340,10 @@ class FileManager {
                 this.elements.createDirectoryInputWrapper.classList.remove('show-input');
                 this.elements.createDirectoryInputWrapper.classList.add('d-none');
                 this.elements.createDirectoryInput.value = ''; // Clear input field
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                const errorMessage = jqXHR.responseJSON?.message || 'Failed to create directory. Please try again later.';
+                console.log(errorMessage);
             }
         });
     }
@@ -345,7 +366,13 @@ class FileManager {
             data: formData,
             processData: false,
             contentType: false,
-            success: () => this.fetchFiles(this.currentPath), // Refresh file list
+            success: () =>{
+                this.fetchFiles(this.currentPath);
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                const errorMessage = jqXHR.responseJSON?.message || 'Failed to upload. Please try again later.';
+                console.log(errorMessage);
+            }
         });
     }
 
@@ -362,7 +389,13 @@ class FileManager {
                     paths: selectedPaths,
                     _token: this.settings.csrfToken,
                 },
-                success: () => this.fetchFiles(this.currentPath), // Refresh file list
+                success: () => {
+                    this.fetchFiles(this.currentPath);
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    const errorMessage = jqXHR.responseJSON?.message || 'Failed to delete. Please try again later.';
+                    console.log(errorMessage);
+                }
             });
         }
     }

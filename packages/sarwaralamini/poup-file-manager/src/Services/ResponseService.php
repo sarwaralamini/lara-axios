@@ -1,19 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace Sarwar\PopupFileManager\Services;
 
 use Illuminate\Http\JsonResponse;
 
 class ResponseService
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Build a standardized JSON response for API requests.
      *
@@ -25,7 +17,7 @@ class ResponseService
      * @param string $message A message providing additional context about the response.
      * @param int $code The HTTP status code for the response (default: 200).
      *
-     * @return \Illuminate\Http\JsonResponse The JSON response object.
+     * @return JsonResponse The JSON response object.
      */
     function BUILD_JSON_RESPONSE(
         bool $is_success  = true,
