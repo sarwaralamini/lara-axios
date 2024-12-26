@@ -38,30 +38,24 @@ This is a test project to demonstrate how to implement and consume internal APIs
    - Create a database on your local or live server.
    - Edit the `.env` file and enter the correct database credentials.
 
-6. **Install Laravel Sanctum for API authentication**:  
+6. **Configure your `.env` file**:  
+   Add the following settings to your `.env` file:  
+   - `APP_URL` (e.g., `http://yoursite.com`)
+   - `SESSION_DOMAIN` (e.g., `.yoursite.com`)
+   - `SANCTUM_STATEFUL_DOMAINS` (e.g., `http://yoursite.com`)
+
+7. **Run migrations**:  
    Run the command:  
    ```bash
-   php artisan install:api
+   php artisan migrate --seed
    ```
-
-7. **Configure your `.env` file**:  
-   Add the following settings to your `.env` file:  
-   - `APP_URL`
-   - `SESSION_DOMAIN`
-   - `SANCTUM_STATEFUL_DOMAINS`
+   This will create a system administrator account and generate 100 random user accounts.
 
 8. **Clear cache and optimize**:  
    Run the command:  
    ```bash
    php artisan optimize:clear
    ```
-
-9. **Run migrations**:  
-   Run the command:  
-   ```bash
-   php artisan migrate --seed
-   ```
-   This will create a system administrator account and generate 100 random user accounts.
 
 # Sarwar Popup File Manager: Publishable File Installation Guide
 

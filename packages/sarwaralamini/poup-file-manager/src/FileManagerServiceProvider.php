@@ -33,7 +33,6 @@ class FileManagerServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/resources/js/popup-file-manager.js' => public_path('dist/js/popup-file-manager.js'),
             __DIR__ . '/resources/css/popup-file-manager.css' => public_path('dist/css/popup-file-manager.css'),
-            __DIR__ . '/resources/views/vendor' => resource_path('views/vendor'),
         ], 'plfm_public');
 
         $this->publishes([
