@@ -47,6 +47,9 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script src="{{ asset('dist/js/bootstrap-notify-3.1.3.min.js') }}"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    const app_url = "{{ url('/') }}";
+  </script>
   <script src="{{ asset('dist/js/common.js') }}"></script>
 
   @stack('js')

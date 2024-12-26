@@ -100,7 +100,7 @@
         uploadButtonSelector: '#uploadFile',
         defaultPath: "{{ config('pupup-file-manager.default_path') }}",
         storagePath: "{{ config('pupup-file-manager.storage_path') }}",
-        folderIcon: "{{ config('pupup-file-manager.folder_icon') }}",
+        folderIcon: "{{ asset('dist/img/folder.png') }}",
         pdf_icon: "{{ asset('dist/img/pdf.png') }}",
         hiddenNames: ['thumbnails', 'index.html', 'index.htm', 'index.php', 'index', '.gitignore', 'folder.png'],
         hiddenPaths: ['catalog/thumbnails/products', 'catalog/thumbnails/categories'],

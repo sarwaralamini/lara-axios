@@ -83,10 +83,10 @@ if(loginForm)
         passwordField.disabled = true;
 
         // Retrieve CSRF cookie for secure authentication
-        await axios.get('http://lara-axios.sar/sanctum/csrf-cookie').then(async (csrfResponse) => {
+        await axios.get(app_url+'/sanctum/csrf-cookie').then(async (csrfResponse) => {
             try {
                 // Send the login request with form data
-                const loginResponse = await axios.post('http://lara-axios.sar/api/v1/web/login',
+                const loginResponse = await axios.post(app_url+'/api/v1/web/login',
                     formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
@@ -176,7 +176,7 @@ if(logoutForm)
 
         try {
             // Send the logout request to the server using Axios
-            const response = await axios.get('http://lara-axios.sar/api/v1/web/logout',
+            const response = await axios.get(app_url+'/api/v1/web/logout',
                 {
                     headers: {
                         'Content-Type': 'application/json', // Content-Type header
